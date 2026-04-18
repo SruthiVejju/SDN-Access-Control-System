@@ -46,7 +46,44 @@ A POX controller is used to:
 
 ## Setup and Execution
 
-### Step 1: Start Controller
-```bash
+Step 1: Start Controller
 cd ~/pox
 python3 pox.py access_control openflow.of_01 --port=6633
+
+Step 2: Run Mininet
+sudo mn --topo single,3 --controller=remote,ip=127.0.0.1,port=6633 --switch ovs,protocols=OpenFlow10
+
+---
+
+## Testing
+
+Allowed Communication
+h1 ping h2
+h2 ping h1
+
+Blocked Communication
+h3 ping h1
+h3 ping h2
+
+---
+
+## Flow Table Verification
+sh ovs-ofctl dump-flows s1
+
+---
+
+## Expected Output
+- Authorized hosts communicate successfully
+- Unauthorized host is blocked
+- Controller logs show ALLOWED and BLOCKED packets
+- Flow rules are installed dynamically
+
+---
+
+## Conclusion
+This project demonstrates SDN-based access control using a centralized controller and whitelist-based policy enforcement.
+
+---
+
+## Author
+Sruthi Vejju
